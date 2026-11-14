@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Estimate your US mortgage payment with principal, interest, property taxes, homeowners insurance, and extra payments. Explore clear mortgage guides and FAQs.">
+<meta name="theme-color" content="#8b5cf6">
+<title>FinCalc Tools | Free US Mortgage Calculator &amp; Guides</title>
+<style>
+:root{--pink:#ff6b9a;--purple:#8b5cf6;--sky:#38bdf8;--mint:#34d399;--yellow:#fde68a;--bg:#fdf4ff;--card:#ffffff;--text:#2d1b4e;--muted:#6b5b84;--border:#f0e1ff;--grad:linear-gradient(135deg,#ff6b9a 0%,#8b5cf6 55%,#38bdf8 100%);}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#1a1030;--card:#261a44;--text:#f5eaff;--muted:#c4b5dd;--border:#3b2a60;}}
+:root[data-theme="dark"]{--bg:#1a1030;--card:#261a44;--text:#f5eaff;--muted:#c4b5dd;--border:#3b2a60;}
+*{box-sizing:border-box}
+html{scroll-padding-top:90px}
+body{margin:0;font-family:"Nunito",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:16px}
+header{position:sticky;top:0;z-index:10;background:var(--grad);padding-top:env(safe-area-inset-top,0px);box-shadow:0 4px 20px rgba(139,92,246,.25)}
+.nav{max-width:1000px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;flex-wrap:wrap;gap:10px}
+.brand{font-weight:900;font-size:1.25rem;color:#fff;text-decoration:none}
+.nav ul{list-style:none;display:flex;gap:6px;margin:0;padding:0;flex-wrap:wrap}
+.nav a{color:#fff;text-decoration:none;font-size:.9rem;font-weight:700;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.15);transition:.2s}
+.nav a:hover,.nav a.active{background:#fff;color:var(--purple)}
+.wrap{max-width:920px;margin:0 auto;padding:28px 16px 48px}
+.page{display:none;animation:fade .4s ease}
+.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+h1{font-size:2rem;margin:.2rem 0 .5rem;font-weight:900;line-height:1.2}
+h1 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:1.3rem;margin:0 0 12px;font-weight:800}
+h3{font-size:1.05rem;margin:18px 0 6px;font-weight:800;color:var(--purple)}
+p{margin:.6rem 0}
+ul{padding-left:20px;margin:.5rem 0}
+li{margin:.3rem 0}
+.hero{text-align:center;padding:30px 10px 10px}
+.hero p{color:var(--muted);font-size:1.1rem;max-width:640px;margin:10px auto}
+.emoji-big{font-size:3.2rem;display:inline-block;animation:bounce 2.4s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.btn{display:inline-block;margin-top:14px;padding:12px 26px;border-radius:999px;background:var(--grad);color:#fff;font-weight:800;text-decoration:none;box-shadow:0 8px 20px rgba(139,92,246,.35);transition:transform .2s}
+.btn:hover{transform:translateY(-2px) scale(1.02)}
+.card{background:var(--card);border:2px solid var(--border);border-radius:24px;padding:22px;margin-bottom:18px;box-shadow:0 6px 24px rgba(139,92,246,.08)}
+.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:20px}
+.tool a{color:var(--text);text-decoration:none;display:block;height:100%}
+.tool .ico{font-size:2rem;margin-bottom:6px}
+.tool h3{color:var(--purple);margin-top:0}
+.badge{display:inline-block;font-size:.72rem;padding:3px 10px;border-radius:999px;background:var(--yellow);color:#78350f;margin-left:6px;vertical-align:middle;font-weight:800}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+label{display:block;font-size:.88rem;color:var(--muted);margin-bottom:5px;font-weight:700}
+input{width:100%;padding:12px 14px;border:2px solid var(--border);border-radius:14px;font-size:1rem;background:var(--bg);color:var(--text);font-family:inherit}
+input:focus{outline:none;border-color:var(--pink)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.stat{padding:16px;border-radius:18px;background:linear-gradient(135deg,#fff0f7,#f3e8ff);border:2px solid var(--border);text-align:center}
+.stat .v{font-size:1.4rem;font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat .k{font-size:.82rem;color:var(--muted);font-weight:700}
+.table-wrap{overflow-x:auto;border-radius:14px}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th,td{padding:10px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap}
+th{color:var(--purple)}
+th:first-child,td:first-child{text-align:left}
+details{border-radius:14px;padding:12px 16px;margin:10px 0;background:var(--bg);border:2px solid var(--border)}
+summary{cursor:pointer;font-weight:800;color:var(--purple);font-size:1.02rem}
+details p{margin-top:10px}
+.note{font-size:.9rem;color:var(--muted)}
+.founder{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.avatar{width:84px;height:84px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:900}
+.pill{display:inline-block;padding:4px 12px;border-radius:999px;background:#fce7f3;color:#be185d;font-weight:800;font-size:.85rem}
+.contact-btn{display:inline-block;margin-top:10px;padding:12px 22px;border-radius:999px;background:var(--mint);color:#064e3b;font-weight:800;text-decoration:none}
+.toc a{display:inline-block;margin:4px 6px 4px 0;padding:6px 12px;border-radius:999px;background:var(--bg);border:2px solid var(--border);color:var(--purple);font-weight:700;text-decoration:none;font-size:.9rem}
+footer{text-align:center;color:var(--muted);font-size:.9rem;padding:24px 16px 36px}
+footer a{color:var(--purple);font-weight:700;margin:0 8px;text-decoration:none}
+.error-message{color:#b91c1c;background:#fef2f2;border:1px solid #fecaca;border-radius:12px;padding:10px 12px;margin:12px 0 0;font-weight:700}
+input:focus-visible, a:focus-visible, summary:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+@media(max-width:600px){
+  .nav{align-items:flex-start}
+  .nav ul{width:100%;gap:8px}
+  .nav a{display:inline-block;font-size:.82rem;padding:6px 10px}
+  .wrap{padding:18px 12px 36px}
+  .hero{padding-top:20px}
+  h1{font-size:1.65rem}
+  .card{padding:17px;border-radius:18px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stat{padding:12px 8px}
+  .stat .v{font-size:1.15rem}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="brand" href="#home">💖 FinCalc Tools</a>
+    <ul>
+      <li><a href="#home" data-nav="home">🏡 Home</a></li>
+      <li><a href="#mortgage" data-nav="mortgage">🧮 Calculator</a></li>
+      <li><a href="#faq" data-nav="faq">❓ Q&amp;A</a></li>
+      <li><a href="#about" data-nav="about">✨ About</a></li>
+      <li><a href="#privacy" data-nav="privacy">🔒 Privacy</a></li>
+      <li><a href="#contact" data-nav="contact">💌 Contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- HOME -->
+  <section class="page" id="home">
+    <div class="hero">
+      <div class="emoji-big">🏠</div>
+      <h1>Free <span>Mortgage &amp; Money Calculators</span></h1>
+      <p>Understand your home loan before you sign. Our calculators show your real monthly cost with taxes and insurance, and explain every number in plain language.</p>
+      <a class="btn" href="#mortgage">Open the Mortgage Calculator 🧮</a>
+    </div>
+
+    <div class="card">
+      <h2>👋 Welcome to FinCalc Tools</h2>
+      <p>Buying a home is probably the biggest financial decision most people make. The numbers can feel confusing: interest rates, down payments, escrow, PMI and extra payments all affect what you actually pay. FinCalc Tools was built to make these numbers easy to understand, so you can plan with confidence instead of guessing.</p>
+      <p>Everything on this site is free. You do not need to create an account, and the calculations run right in your browser.</p>
+    </div>
+
+    <div class="tools">
+      <div class="card tool">
+        <a href="#mortgage">
+          <div class="ico">🏠</div>
+          <h3>Mortgage Calculator</h3>
+          <p>See your full monthly payment with taxes and insurance, and find out how extra payments can save you interest and years.</p>
+        </a>
+      </div>
+      <div class="card tool">
+        <a href="#faq">
+          <div class="ico">❓</div>
+          <h3>Mortgage Q&amp;A</h3>
+          <p>Clear answers to common questions about down payments, PMI, escrow, rates, refinancing and more.</p>
+        </a>
+      </div>
+      <div class="card tool">
+        <div class="ico">🚗</div>
+        <h3>Auto Loan <span class="badge">Coming soon</span></h3>
+        <p>Compare car loan payments, total interest and early payoff options.</p>
+      </div>
+      <div class="card tool">
+        <div class="ico">🔁</div>
+        <h3>Refinance <span class="badge">Coming soon</span></h3>
+        <p>Find out whether refinancing your mortgage could lower your costs.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📚 Why use a mortgage calculator?</h2>
+      <p>A mortgage calculator helps you test "what if" questions before you talk to a lender. What if I put 10% down instead of 20%? What if I choose a 15-year loan? What if I pay an extra $200 each month? Each change shows you the effect on your payment and total interest, so you can compare options side by side.</p>
+      <p>Many buyers are surprised by the total monthly cost. The loan payment is only one part. Property tax and homeowners insurance are often added to the bill through an escrow account, and in some cases private mortgage insurance (PMI) is added too. Our calculator includes taxes and insurance so you see a realistic number from the start.</p>
+      <p>Remember that calculators give estimates. Your actual loan terms depend on your credit score, income, debts, property location and the lender you choose. Use the numbers as a planning tool, then confirm them with a Loan Estimate from a lender.</p>
+    </div>
+  </section>
+
+  <!-- MORTGAGE -->
+  <section class="page" id="mortgage">
+    <h1>🧮 Mortgage Calculator <span>with Extra Payments</span></h1>
+    <p class="note">Type your numbers below. Results update instantly ✨</p>
+
+    <div class="card">
+      <h2>📝 Loan details</h2>
+      <div class="grid">
+        <div><label for="price">Home price ($)</label><input id="price" type="number" min="0" step="1000" value="400000"></div>
+        <div><label for="down">Down payment ($)</label><input id="down" type="number" min="0" step="1000" value="80000"></div>
+        <div><label for="rate">Interest rate (% per year)</label><input id="rate" type="number" min="0" step="0.01" value="6.5"></div>
+        <div><label for="term">Loan term (years)</label><input id="term" type="number" min="1" max="40" step="1" value="30"></div>
+        <div><label for="tax">Property tax (per year, $)</label><input id="tax" type="number" min="0" step="100" value="4800"></div>
+        <div><label for="ins">Home insurance (per year, $)</label><input id="ins" type="number" min="0" step="100" value="1800"></div>
+        <div><label for="extra">Extra payment (per month, $)</label><input id="extra" type="number" min="0" step="25" value="200"></div>
+      </div>
+      <p id="calcError" class="error-message" role="alert" aria-live="polite" hidden></p>
+    </div>
+
+    <div class="card">
+      <h2>💰 Your monthly payment</h2>
+      <div class="stats">
+        <div class="stat"><div class="v" id="totalMonthly">-</div><div class="k">Total monthly (PITI)</div></div>
+        <div class="stat"><div class="v" id="pi">-</div><div class="k">Principal and interest</div></div>
+        <div class="stat"><div class="v" id="loanAmt">-</div><div class="k">Loan amount</div></div>
+        <div class="stat"><div class="v" id="totalInt">-</div><div class="k">Total interest (no extra)</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🎉 Impact of extra payments</h2>
+      <div class="stats">
+        <div class="stat"><div class="v" id="intSaved">-</div><div class="k">Interest saved</div></div>
+        <div class="stat"><div class="v" id="timeSaved">-</div><div class="k">Time saved</div></div>
+        <div class="stat"><div class="v" id="newPayoff">-</div><div class="k">New payoff period</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📅 Balance by year</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Year</th><th>Balance (standard)</th><th>Balance (with extra)</th></tr></thead>
+          <tbody id="yearRows"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📖 How to use this calculator</h2>
+      <p>Start with the home price and your down payment. The calculator subtracts the down payment from the price to find your loan amount, then estimates your monthly principal and interest using the rate and term you enter.</p>
+      <p>Next, add your yearly property tax and homeowners insurance. Divide each by 12 to get the monthly amount, which is added to your principal and interest. Together, these make up your total monthly housing cost, known as PITI.</p>
+      <p>Finally, enter an extra monthly payment to see how it changes your results. The calculator applies the extra money straight to principal every month and shows how much interest you save and how many months you finish early.</p>
+      <p class="note">Tip: Try a few scenarios, such as a 15-year term, a lower rate or a bigger down payment, and compare the results.</p>
+    </div>
+
+    <div class="card">
+      <h2>🧩 What makes up your monthly payment?</h2>
+      <h3>Principal</h3>
+      <p>Principal is the amount you borrowed. Each payment reduces this balance a little. In the early years, only a small part of your payment goes to principal.</p>
+      <h3>Interest</h3>
+      <p>Interest is what the lender charges for lending you money. It is calculated on your remaining balance each month, so it decreases as your balance falls.</p>
+      <h3>Property tax</h3>
+      <p>Local governments charge property tax based on the assessed value of your home. Rates vary a lot by county and city. Many lenders collect one-twelfth of the yearly tax each month and pay the bill for you from an escrow account.</p>
+      <h3>Homeowners insurance</h3>
+      <p>Insurance protects your home against damage and covers liability. Lenders require it, and it is usually paid through escrow as well. Some areas also need separate flood or wind coverage.</p>
+    </div>
+
+    <div class="card">
+      <h2>🚀 How extra payments help you</h2>
+      <p>Mortgage interest is calculated on your outstanding balance. When you pay extra toward principal, the balance drops sooner, so less interest builds up in every month that follows. Over a long loan, that adds up to a lot of money.</p>
+      <p>Extra payments can also shorten your loan term. Your regular payment stays the same, but you finish the loan earlier. Many borrowers use small, regular extra payments, such as an additional $100 or $200 a month, or a yearly lump sum from a bonus or tax refund.</p>
+      <p>Before you start, check three things with your lender. First, confirm that extra payments go to principal and not to future payments. Second, confirm there is no prepayment penalty. Third, ask whether you can make extra payments online or need to send them in a specific way.</p>
+    </div>
+
+    <div class="card">
+      <h2>⚖️ 15-year vs 30-year mortgage</h2>
+      <p>A 15-year mortgage usually has a lower interest rate than a 30-year loan, and the monthly payment is higher because you repay the loan in half the time. Over the life of the loan, you pay far less interest and build equity faster.</p>
+      <p>A 30-year mortgage has lower required monthly payments. That leaves more room in your budget for savings, emergencies and other goals. Many people choose a 30-year loan and then make extra payments when their income allows, which gives them a lower required payment with the option to pay it off faster.</p>
+      <p>The right choice depends on your income stability, savings, other debts and long-term plans. If you can comfortably afford the higher payment and want to be debt-free sooner, a 15-year loan can be a strong choice.</p>
+    </div>
+
+    <div class="card">
+      <h2>🏡 How much house can you afford?</h2>
+      <p>A common guideline is the 28/36 rule. It suggests that your housing costs (PITI) should stay below 28% of your gross monthly income, and your total monthly debt payments, including housing, car loans, student loans and credit cards, should stay below 36%.</p>
+      <p>Lenders may allow higher ratios, especially for borrowers with strong credit and savings. However, a lower ratio gives you breathing room for repairs, job changes and rising costs. Remember that property taxes and insurance can increase over time.</p>
+      <p>Don't forget upfront costs. Closing costs are usually between 2% and 5% of the loan amount, and you may also need money for moving, furniture and repairs. Keep an emergency fund after you pay your down payment and closing costs.</p>
+    </div>
+
+    <div class="card">
+      <h2>🔒 Quick link to our Q&amp;A</h2>
+      <p>Have more questions about down payments, PMI, rates or refinancing? Visit our detailed <a href="#faq" style="color:var(--purple);font-weight:800">Mortgage Q&amp;A page</a>.</p>
+    </div>
+  </section>
+
+  <!-- Q&A -->
+  <section class="page" id="faq">
+    <h1>❓ Mortgage <span>Questions &amp; Answers</span></h1>
+    <p class="note">Simple, clear answers to the questions buyers ask most. Tap any question to open it.</p>
+
+    <div class="card toc">
+      <h2>📂 Topics</h2>
+      <a href="#faq">Down payment</a>
+      <a href="#faq">Interest rates</a>
+      <a href="#faq">Loan types</a>
+      <a href="#faq">Monthly costs</a>
+      <a href="#faq">Refinancing</a>
+      <a href="#faq">Extra payments</a>
+    </div>
+
+    <div class="card">
+      <h2>💵 Down payment and upfront costs</h2>
+      <details>
+        <summary>How much down payment do I need to buy a house?</summary>
+        <p>It depends on the loan type. Conventional loans can start at 3% to 5% down for some buyers, FHA loans require at least 3.5% with a qualifying credit score, and VA and USDA loans may allow zero down for eligible borrowers. A larger down payment lowers your loan amount, your monthly payment and often your interest rate. Ask a lender which programs you qualify for.</p>
+      </details>
+      <details>
+        <summary>Is 20% down really necessary?</summary>
+        <p>No, 20% is not required for most loans. However, with a conventional loan, putting less than 20% down usually means you pay private mortgage insurance (PMI) until you reach enough equity. Many buyers choose a smaller down payment to keep savings for emergencies, and that can be a sensible decision if the monthly cost is manageable.</p>
+      </details>
+      <details>
+        <summary>What are closing costs and how much will they be?</summary>
+        <p>Closing costs are fees paid when the loan finishes. They often include the lender's origination fee, appraisal, title insurance, title search, recording fees, credit report fees, prepaid interest and prepaid insurance or tax deposits. They are commonly around 2% to 5% of the loan amount. Some sellers or lenders offer credits that can reduce what you pay upfront.</p>
+      </details>
+      <details>
+        <summary>Can I use gift money for my down payment?</summary>
+        <p>Many loan programs allow gift funds from a close family member, as long as the donor provides a signed letter stating the money is a gift and does not need to be repaid. Lenders usually want to see bank statements showing where the money came from. Rules vary by loan type, so confirm the details with your lender early.</p>
+      </details>
+      <details>
+        <summary>What is an earnest money deposit?</summary>
+        <p>Earnest money is a good-faith deposit you give when your offer on a home is accepted. It is usually 1% to 3% of the purchase price, and it is held in escrow and applied to your closing costs or down payment at closing. If you back out for a reason not allowed in your contract, you may lose it. Read the contingencies carefully.</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <h2>📈 Interest rates and loan terms</h2>
+      <details>
+        <summary>What is the difference between interest rate and APR?</summary>
+        <p>The interest rate is the cost of borrowing the principal. The annual percentage rate (APR) includes the interest rate plus certain fees and costs, such as points and some closing charges, spread over the life of the loan. The APR is usually higher than the rate and helps you compare offers more fairly. The calculator above uses the interest rate for the payment estimate.</p>
+      </details>
+      <details>
+        <summary>What are mortgage points, and are they worth buying?</summary>
+        <p>A discount point is a fee paid upfront, usually equal to 1% of the loan amount, that lowers your interest rate. Points can make sense if you plan to keep the loan for many years. To check, divide the cost of the points by the monthly savings to find the break-even period. If you expect to sell or refinance before that point, the points may not pay off.</p>
+      </details>
+      <details>
+        <summary>Does my credit score affect my mortgage rate?</summary>
+        <p>Yes. Lenders use your credit score to judge risk, and a higher score usually qualifies you for a lower rate. Even a small difference in rate can change your payment by a noticeable amount over 30 years. Before applying, check your credit report for errors, pay bills on time and try to keep credit card balances low.</p>
+      </details>
+      <details>
+        <summary>Should I choose a fixed-rate or adjustable-rate mortgage?</summary>
+        <p>A fixed-rate mortgage keeps the same interest rate and principal and interest payment for the whole term, which makes budgeting simple. An adjustable-rate mortgage (ARM) starts with a fixed rate for a set number of years, then adjusts based on a market index. ARMs can have lower starting rates, but payments can rise later. They can suit buyers who plan to move or refinance before the adjustment period, but they carry more risk.</p>
+      </details>
+      <details>
+        <summary>Is a 15-year or 30-year mortgage better?</summary>
+        <p>It depends on your goals and budget. A 15-year loan has higher monthly payments but usually a lower rate and far less total interest. A 30-year loan has lower required payments and more flexibility. Many people take the 30-year option and pay extra when they can, which keeps the lower required payment as a safety net.</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <h2>🏦 Loan types</h2>
+      <details>
+        <summary>What is PMI and how do I get rid of it?</summary>
+        <p>Private mortgage insurance (PMI) protects the lender if you stop paying. It is usually required on conventional loans when your down payment is under 20%. PMI is often added to your monthly payment. Under federal rules for most conventional loans, you can ask to cancel PMI once your balance reaches 80% of the home's original value, and it is generally removed automatically at 78%. Check your loan documents for the exact terms, and ask about options if your home value has risen.</p>
+      </details>
+      <details>
+        <summary>What is an FHA loan?</summary>
+        <p>An FHA loan is backed by the Federal Housing Administration. It is designed for buyers with lower credit scores or smaller down payments, and it commonly requires as little as 3.5% down with a qualifying credit score. FHA loans include mortgage insurance premiums, both upfront and annual, and these generally stay for the life of the loan unless you refinance. Compare the total cost with a conventional loan before you decide.</p>
+      </details>
+      <details>
+        <summary>Who is eligible for a VA loan?</summary>
+        <p>VA loans are offered to eligible veterans, active-duty service members, certain reservists and some surviving spouses. They often require no down payment and no monthly PMI. A VA funding fee is usually charged, although it can be reduced or waived for some borrowers. Eligibility depends on service history, so check with the Department of Veterans Affairs or a VA-approved lender.</p>
+      </details>
+      <details>
+        <summary>What is a jumbo loan?</summary>
+        <p>A jumbo loan is a mortgage that is larger than the limits set for conforming loans by the Federal Housing Finance Agency. Because these loans are not backed by Fannie Mae or Freddie Mac, lenders may require higher credit scores, larger down payments and more cash reserves. Loan limits change each year, so check the current figure for your county.</p>
+      </details>
+      <details>
+        <summary>What is pre-approval and why does it matter?</summary>
+        <p>Pre-approval is a lender's conditional commitment to lend you a specific amount, based on a review of your income, assets, debts and credit. It usually involves submitting documents and a credit check. Sellers often prefer offers from pre-approved buyers because it shows you are serious and financially ready. Pre-approval is different from pre-qualification, which is a quicker estimate with less verification.</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <h2>🧾 Monthly costs and escrow</h2>
+      <details>
+        <summary>What is an escrow account?</summary>
+        <p>An escrow account is managed by your lender or loan servicer. Each month you pay one-twelfth of your estimated yearly property tax and homeowners insurance along with your principal and interest. The servicer holds that money and pays the tax and insurance bills when they are due. Escrow protects the property and makes large annual bills easier to manage, but the monthly amount can change if taxes or premiums go up.</p>
+      </details>
+      <details>
+        <summary>Why did my escrow payment go up?</summary>
+        <p>Escrow amounts are reviewed each year. If property taxes or homeowners insurance premiums increased, your monthly payment may rise. Sometimes an escrow shortage also occurs when the account did not collect enough during the past year, and the servicer may spread the shortage across future payments. Your annual escrow statement explains the change, and you can ask the servicer to walk you through it.</p>
+      </details>
+      <details>
+        <summary>How can I lower my property taxes?</summary>
+        <p>Many areas let homeowners appeal their property assessment if they believe it is too high. You usually need evidence, such as recent sales of similar homes, a professional appraisal or documented problems with the property. Check your local assessor's office for deadlines and forms. Some states and counties also offer homestead exemptions that reduce the taxable value for owner-occupants.</p>
+      </details>
+      <details>
+        <summary>How much homeowners insurance do I need?</summary>
+        <p>Lenders require enough coverage to protect the loan, which generally means insuring the home's rebuild cost, not its market value. The land is not included in the rebuild cost. Consider liability coverage and extra protection for valuable items. In flood or hurricane-prone areas, you may need separate policies. Compare quotes each year, because premiums can change significantly.</p>
+      </details>
+      <details>
+        <summary>Does a mortgage calculator include all my costs?</summary>
+        <p>Our calculator includes principal, interest, property tax and insurance, and it lets you add an extra payment. It does not include PMI, HOA fees, closing costs, utilities, maintenance or repairs. These can add a lot to your total monthly and yearly cost. Include them in your budget when you decide how much house you can afford.</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <h2>🔁 Refinancing and paying off early</h2>
+      <details>
+        <summary>When does refinancing make sense?</summary>
+        <p>Refinancing replaces your current mortgage with a new one. People often do it to get a lower interest rate, shorten the loan term, switch from an adjustable to a fixed rate, or remove PMI. Compare the closing costs with the monthly savings to find your break-even point. If you plan to move before that point, refinancing may not be worthwhile.</p>
+      </details>
+      <details>
+        <summary>Is there a penalty for paying off my mortgage early?</summary>
+        <p>Most modern conventional and government-backed mortgages do not have prepayment penalties, and some rules restrict them. However, some loans, especially certain older or non-standard loans, may still include one. Always check your Loan Estimate and closing disclosure, or ask your lender directly, before you make large extra payments.</p>
+      </details>
+      <details>
+        <summary>What is mortgage recasting?</summary>
+        <p>Recasting means you make a large lump-sum payment toward principal, and the lender recalculates your monthly payment based on the smaller remaining balance, while keeping the same interest rate and end date. It can lower your required monthly payment without refinancing. Not all lenders offer recasting, and there is often a fee, so ask before you plan around it.</p>
+      </details>
+      <details>
+        <summary>Should I pay extra on my mortgage or invest the money?</summary>
+        <p>This depends on your interest rate, your other debts, your risk tolerance and your goals. Paying extra gives a guaranteed return equal to your interest rate. Investing can offer higher returns, but it also carries risk. Many people first build an emergency fund, take any employer retirement match, and pay off high-interest debt before adding extra to a low-rate mortgage. This is general information, so a financial advisor can help you decide.</p>
+      </details>
+      <details>
+        <summary>What happens if I miss a mortgage payment?</summary>
+        <p>Late payments usually trigger a late fee after a short grace period, often 10 to 15 days. A payment that is 30 days late may be reported to credit bureaus, which can lower your score. If payments are missed for several months, the lender can start foreclosure. Contact your servicer as soon as you know you may struggle, because hardship options or repayment plans may be available.</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <h2>🙋 General questions</h2>
+      <details>
+        <summary>How is my monthly mortgage payment calculated?</summary>
+        <p>The principal and interest part uses the standard formula: monthly payment equals the loan amount multiplied by the monthly rate, divided by one minus (one plus the monthly rate) raised to the negative power of the number of payments. Taxes and insurance are then divided by 12 and added. Our calculator uses this same formula and shows the results on the page.</p>
+      </details>
+      <details>
+        <summary>How much of my early payments go to interest?</summary>
+        <p>In the early years of a 30-year loan, most of each payment goes to interest. Over time, the share going to principal increases. This is why extra payments in the early years have a strong effect, because they reduce a balance that has the most interest still ahead of it.</p>
+      </details>
+      <details>
+        <summary>What is a Loan Estimate and a Closing Disclosure?</summary>
+        <p>A Loan Estimate is a standard three-page form a lender must give you within three business days after you apply. It shows the estimated loan terms, monthly payment and closing costs. A Closing Disclosure is provided at least three business days before you close, and it shows the final figures. Compare the two carefully, and ask questions about any changes.</p>
+      </details>
+      <details>
+        <summary>Can I deduct mortgage interest on my taxes?</summary>
+        <p>In some cases, you can deduct mortgage interest if you itemize deductions on your federal return. Current rules limit the deduction for larger loan amounts, and the rules can change. Your tax situation is unique, so please speak with a qualified tax professional before counting on any deduction.</p>
+      </details>
+      <details>
+        <summary>Are the results from this calculator exact?</summary>
+        <p>No. The results are estimates for planning. Your lender's figures may differ because of your final rate, PMI, fees, escrow changes, insurance premiums and local tax rates. Use the calculator to compare scenarios, then confirm the details with your lender and, for important decisions, a licensed professional.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="page" id="about">
+    <h1>✨ About <span>FinCalc Tools</span></h1>
+    <div class="card founder">
+      <div class="avatar">M</div>
+      <div>
+        <h2 style="margin:0">Ms. Minahil</h2>
+        <span class="pill">Founder</span>
+        <p style="margin:8px 0 0">I am a Software Engineer.</p>
+      </div>
+    </div>
+    <div class="card">
+      <h2>💜 Our story</h2>
+      <p>FinCalc Tools started with a simple idea: financial tools should be easy to understand. Many calculators online show a number without explaining where it comes from, which leaves people confused or unsure whether they can trust it. We wanted to build something different, with clean tools, clear formulas and plain-language explanations.</p>
+      <p>As a software engineer, I focus on making tools that work quickly, look good on any device and respect your privacy. Our calculators run in your browser, so your numbers stay with you.</p>
+    </div>
+    <div class="card">
+      <h2>🎯 Our mission</h2>
+      <p>Our mission is to help people make informed decisions about homes and money. We aim to provide accurate tools, honest explanations and helpful answers to common questions, so you can compare your options with confidence.</p>
+      <p>We are always improving the site. If you have an idea for a new calculator or a question we have not answered yet, please contact us. Your feedback helps us make FinCalc Tools more useful for everyone.</p>
+    </div>
+    <div class="card">
+      <h2>🛠️ What we offer</h2>
+      <ul>
+        <li><strong>Mortgage Calculator:</strong> Monthly payment with taxes and insurance, plus extra payment impact.</li>
+        <li><strong>Mortgage Q&amp;A:</strong> Detailed answers to common home loan questions.</li>
+        <li><strong>Coming soon:</strong> Auto loan and refinance calculators.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>⚠️ Important note</h2>
+      <p class="note">Our calculators and articles are for education and planning only. They are not offers of credit, legal advice, tax advice or financial advice. Please see our <a href="#privacy" style="color:var(--purple);font-weight:800">Privacy Policy</a> and Disclaimer on this site for more information.</p>
+    </div>
+  </section>
+
+  <!-- PRIVACY -->
+  <section class="page" id="privacy">
+    <h1>🔒 Privacy <span>Policy</span></h1>
+    <p class="note">Last updated: November 2026</p>
+
+    <div class="card">
+      <h2>1. Introduction</h2>
+      <p>FinCalc Tools ("we", "us" or "our") respects your privacy. This Privacy Policy explains what information we collect when you visit our website, how we use it, and the choices you have. By using this website, you agree to the practices described here.</p>
+    </div>
+
+    <div class="card">
+      <h2>2. Information you enter into our calculators</h2>
+      <p>The numbers you type into our calculators, such as home price, down payment, interest rate and term, are processed in your web browser. We do not send these values to our servers, and we do not store them. When you close or refresh the page, the values are removed from our site.</p>
+    </div>
+
+    <div class="card">
+      <h2>3. Information you give us directly</h2>
+      <p>If you contact us by email, we receive your name, email address and any information you include in your message. We use this information only to respond to your question or request. We do not add you to a marketing list without your permission.</p>
+    </div>
+
+    <div class="card">
+      <h2>4. Automatically collected information</h2>
+      <p>Like most websites, we and our service providers may collect limited technical information when you visit, such as your browser type, device type, approximate region, pages viewed, time spent on the site and the referring website. This helps us understand which pages are useful and improve the site's performance and security.</p>
+    </div>
+
+    <div class="card">
+      <h2>5. Cookies and advertising</h2>
+      <p>Our site may use cookies and similar technologies. Cookies are small files stored on your device. They can help remember preferences, measure traffic and show advertisements. Third-party vendors, including Google, may use cookies to serve ads based on your prior visits to this and other websites.</p>
+      <p>Google's use of advertising cookies allows it and its partners to serve ads based on your visits. You can manage ad personalization in your Google account settings, or opt out of certain third-party vendor cookies through the Digital Advertising Alliance or the Network Advertising Initiative websites. You can also control cookies through your browser settings, although some features of the site may then work less well.</p>
+    </div>
+
+    <div class="card">
+      <h2>6. Analytics</h2>
+      <p>We may use analytics tools, such as Google Analytics, to understand how visitors use the site. These tools collect aggregated information and do not identify you personally by default. If we use analytics, we will update this policy to name the provider and explain how to opt out.</p>
+    </div>
+
+    <div class="card">
+      <h2>7. How we use information</h2>
+      <ul>
+        <li>To operate, maintain and improve the website and its tools.</li>
+        <li>To respond to messages you send us.</li>
+        <li>To understand which content is popular and where to add new information.</li>
+        <li>To display relevant advertisements and prevent fraud or misuse.</li>
+        <li>To comply with legal obligations.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>8. How we share information</h2>
+      <p>We do not sell your personal information. We may share limited data with trusted service providers who help us host the site, measure traffic, serve ads or respond to emails. These providers are required to protect the information and use it only for the services they provide. We may also disclose information if required by law or to protect the rights and safety of our users.</p>
+    </div>
+
+    <div class="card">
+      <h2>9. Third-party links</h2>
+      <p>This website may contain links to other websites, such as lenders, government agencies or partner services. We are not responsible for the privacy practices or content of those websites. Please read their privacy policies before sharing any personal information with them.</p>
+    </div>
+
+    <div class="card">
+      <h2>10. Children's privacy</h2>
+      <p>Our website is not directed to children under 13, and we do not knowingly collect personal information from children. If you believe a child has provided us with personal information, please contact us so we can delete it.</p>
+    </div>
+
+    <div class="card">
+      <h2>11. Data security</h2>
+      <p>We take reasonable steps to protect information from loss, misuse and unauthorized access. Because calculator inputs stay in your browser, they are not stored on our servers. However, no method of transmission over the internet is completely secure, so we cannot guarantee absolute security.</p>
+    </div>
+
+    <div class="card">
+      <h2>12. Your choices and rights</h2>
+      <p>Depending on where you live, you may have rights to access, correct or delete personal information we hold about you, or to object to certain processing. To make a request, contact us at the email address below. We will respond within a reasonable time and as required by applicable law.</p>
+    </div>
+
+    <div class="card">
+      <h2>13. Changes to this policy</h2>
+      <p>We may update this Privacy Policy from time to time. When we do, we will revise the "Last updated" date at the top of this page. Continued use of the website after changes means you accept the updated policy.</p>
+    </div>
+
+    <div class="card">
+      <h2>14. Contact us</h2>
+      <p>If you have questions about this Privacy Policy, email us at <strong>engrminahilshahid@gmail.com</strong>.</p>
+    </div>
+
+    <div class="card">
+      <h2>⚠️ Disclaimer</h2>
+      <p>The information and calculators on this site are provided for general information and planning only. Results are estimates and may differ from your lender's, insurer's or advisor's figures. Nothing on this site is legal, tax, or financial advice, and no relationship is created by using it. Please consult a qualified professional before making important financial decisions. We are not responsible for any decisions made based on information from this site.</p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="page" id="contact">
+    <h1>💌 Let's <span>Connect</span></h1>
+    <div class="card">
+      <p>Questions, suggestions or feedback? We would love to hear from you!</p>
+      <p><strong>📧 Email:</strong> engrminahilshahid@gmail.com</p>
+      <p class="note">We usually reply within 2 to 3 business days.</p>
+      <a class="contact-btn" href="mailto:engrminahilshahid@gmail.com">Send us an email 💕</a>
+    </div>
+    <div class="card">
+      <h2>💡 What you can contact us about</h2>
+      <ul>
+        <li>Ideas for new calculators or guides</li>
+        <li>Corrections or updates to existing content</li>
+        <li>Privacy questions or data requests</li>
+        <li>Business or partnership enquiries</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <a href="#about">About</a> ·
+  <a href="#faq">Q&amp;A</a> ·
+  <a href="#privacy">Privacy Policy</a> ·
+  <a href="#privacy">Disclaimer</a> ·
+  <a href="#contact">Contact</a>
+  <p>Made with 💖 by Ms. Minahil · © 2026 FinCalc Tools</p>
+</footer>
+
+<script>
+const fmt0 = new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});
+const fmt2 = new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:2,maximumFractionDigits:2});
+const $ = id => document.getElementById(id);
+const num = id => Number($(id).value);
+
+function simulate(loan, r, pmt, extra, maxMonths){
+  let bal = loan, interest = 0, months = 0;
+  const yearEnd = [];
+  while (bal > 0.005 && months < maxMonths){
+    months++;
+    const i = bal * r;
+    interest += i;
+    let principal = pmt - i + extra;
+    if (principal > bal) principal = bal;
+    if (principal < 0) principal = 0;
+    bal -= principal;
+    if (months % 12 === 0) yearEnd.push(Math.max(bal, 0));
+  }
+  if (months % 12 !== 0) yearEnd.push(Math.max(bal, 0));
+  return { months, interest, yearEnd, paidOff: bal <= 0.005 };
+}
+
+function calc(){
+  const error = $('calcError');
+  const ids = ['price','down','rate','term','tax','ins','extra'];
+  const values = Object.fromEntries(ids.map(id => [id, num(id)]));
+
+  const invalid = ids.find(id => !Number.isFinite(values[id]) || values[id] < 0);
+  if (invalid) {
+    error.textContent = 'Please enter valid numbers. Values cannot be negative or empty.';
+    error.hidden = false;
+    return;
+  }
+
+  const {price, down, rate, term, tax, ins, extra} = values;
+  if (price <= 0) {
+    error.textContent = 'Please enter a home price greater than $0.';
+    error.hidden = false;
+    return;
+  }
+  if (down > price) {
+    error.textContent = 'Your down payment cannot be greater than the home price.';
+    error.hidden = false;
+    return;
+  }
+  if (!Number.isInteger(term) || term < 1 || term > 40) {
+    error.textContent = 'Please enter a whole-number loan term between 1 and 40 years.';
+    error.hidden = false;
+    return;
+  }
+
+  error.textContent = '';
+  error.hidden = true;
+
+  const loan = price - down;
+  const n = term * 12;
+  const r = rate / 100 / 12;
+  const pi = loan === 0 ? 0 : (r === 0 ? loan / n : loan * r / (1 - Math.pow(1 + r, -n)));
+  if (!Number.isFinite(pi)) {
+    error.textContent = 'These values are too large to calculate. Please check your entries.';
+    error.hidden = false;
+    return;
+  }
+
+  const totalMonthly = pi + tax / 12 + ins / 12;
+  const base = simulate(loan, r, pi, 0, n);
+  const withExtra = simulate(loan, r, pi, extra, n);
+
+  if (!base.paidOff || !withExtra.paidOff) {
+    error.textContent = 'The loan could not be fully paid within the selected term. Please review the interest rate and loan details.';
+    error.hidden = false;
+    return;
+  }
+
+  const intSaved = Math.max(base.interest - withExtra.interest, 0);
+  const monthsSaved = Math.max(base.months - withExtra.months, 0);
+  const yrs = Math.floor(withExtra.months / 12), mos = withExtra.months % 12;
+
+  $('totalMonthly').textContent = fmt2.format(totalMonthly);
+  $('pi').textContent = fmt2.format(pi);
+  $('loanAmt').textContent = fmt0.format(loan);
+  $('totalInt').textContent = fmt0.format(base.interest);
+  $('intSaved').textContent = fmt0.format(intSaved);
+  $('timeSaved').textContent = monthsSaved > 0 ? `${Math.floor(monthsSaved/12)} yr ${monthsSaved%12} mo` : 'None';
+  $('newPayoff').textContent = loan === 0 ? 'No loan balance' : `${yrs} yr ${mos} mo`;
+
+  let rows = '';
+  const shown = Math.min(term, base.yearEnd.length);
+  for (let y = 0; y < shown; y++){
+    const a = base.yearEnd[y];
+    const b = y < withExtra.yearEnd.length ? withExtra.yearEnd[y] : 0;
+    rows += `<tr><td>Year ${y+1}</td><td>${fmt0.format(a)}</td><td>${fmt0.format(b)}</td></tr>`;
+  }
+  $('yearRows').innerHTML = rows;
+}
+function route(){
+  const name = (location.hash || '#home').slice(1);
+  const el = document.getElementById(name);
+  const pageId = el && el.classList.contains('page') ? name : 'home';
+  document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === pageId));
+  document.querySelectorAll('[data-nav]').forEach(a => a.classList.toggle('active', a.dataset.nav === pageId));
+  window.scrollTo(0, 0);
+}
+
+window.addEventListener('hashchange', route);
+document.querySelectorAll('input').forEach(el => el.addEventListener('input', calc));
+calc();
+route();
+</script>
+</body>
+</html>
